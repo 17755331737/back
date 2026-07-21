@@ -5,7 +5,7 @@ def git_url = "git@github.com:17755331737/back.git"
 def branch = "master"
 
 //凭证id
-def auth_id = "jenkins"
+def auth_id = "git"
 
 node {
  stage('拉取代码') {
