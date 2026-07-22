@@ -15,7 +15,7 @@ stage('代码审查') {
     //定义当前jenkins的sonarqube-scanner工具，工具名称可在系全局工具配置里面找到
 	def scannerHome = tool 'sonarqube-scanner'
 	//引用当前Jenkinssonar环境，可在系统环境变量里面找到
-	withSonarQubeEnv('SonarQube Scanner 8.1.0.6389'){
+	withSonarQubeEnv('sonarqube-scanner'){
 				sh"""
 					cd ${project}
 					${scannerHome}/bin/sonar-scannerHome
