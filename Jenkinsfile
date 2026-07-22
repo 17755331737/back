@@ -8,14 +8,18 @@ def branch = "master"
 def auth_id = "git"
 
 node {
-    stage('拉取代码') {
-        checkout scmGit(
-            branches: [[name: "*/${branch}"]],
-            extensions: [],
-            userRemoteConfigs: [[
-                credentialsId: auth_id,
-                url: git_url
-            ]]
-        )
-    }
+ stage('拉取代码') {
+    checkout scmGit(branches: [[name: "*/${branch}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${auth_id}", url: "${git_url}"]])
+                  }
+stage('代码审查') {
+    //定义当前jenkins的sonarqube-scanner工具，工具名称可在系全局工具配置里面找到
+	def scannerHome = tool 'sonarqube-scanner'
+	//引用当前Jenkinssonar环境，可在系统环境变量里面找到
+	withSonarQubeEnv('SonarQube Scanner 8.1.0.6389'){
+				sh"""
+					cd ${project}
+					${scannerHome}/bin/sonar-scannerHome
+				"""
+			}	
+}
 }
