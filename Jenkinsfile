@@ -8,7 +8,7 @@ def branch = "master"
 def auth_id = "git"
 
 node {
- stage('拉取代码') {
+stage('拉取代码') {
     checkout scmGit(branches: [[name: "*/${branch}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${auth_id}", url: "${git_url}"]])
                   }
 stage('代码审查') {
@@ -22,4 +22,7 @@ stage('代码审查') {
 				"""
 			}	
 }
+stage('编译打包子工程') {
+    sh "mvn -f tensquare_common clean install"
+	}
 }
