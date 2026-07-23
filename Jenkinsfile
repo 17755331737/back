@@ -41,7 +41,7 @@ stage('编译打包子工程') {
     def imagename = "${project}:${tag}"
 
     //对镜像打标签
-    sh "docker tag ${imagename} ${harbor_url}/${harboe_project}/${imagename}"
+    sh "docker tag ${imagename} ${harbor_url}/${harbor_project}/${imagename}"
 	}
 }
 
