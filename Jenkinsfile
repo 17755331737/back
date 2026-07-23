@@ -13,8 +13,12 @@ def tag = "latest"
 //harbor的url地址
 def harbor_url = "192.168.42.129:85"
 
+//harbor登录凭证
+def harbor_auth = "harbor"
+
 //镜像仓库名称
 def harbor_project = "test"
+
 node {
 stage('拉取代码') {
     checkout scmGit(branches: [[name: "*/${branch}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${auth_id}", url: "${git_url}"]])
@@ -42,6 +46,17 @@ stage('编译打包子工程') {
 
     //对镜像打标签
     sh "docker tag ${imagename} ${harbor_url}/${harbor_project}/${imagename}"
+
+    //推送镜像到harbor仓库
+    withCredentials([usernamePassword(credentialsId: "${harbor_auth}", passwordVariable: 'password', usernameVariable: 'username')]) {
+    // some block
+}
+    //登录harbor
+    sh "docker login  -u ${username} -p ${password} ${harbor_url}"
+
+    //镜像上传
+    sh "docker push  ${imagename} ${harbor_url}/${harbor_project}/${imagename}"
+    sh "echo '镜像推送完成'"
 	}
 }
 
