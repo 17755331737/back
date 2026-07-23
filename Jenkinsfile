@@ -19,6 +19,12 @@ def harbor_auth = "harbor"
 //镜像仓库名称
 def harbor_project = "test"
 
+//harbor登录的用户
+def username = "administrator"
+
+//harbor登录的密码
+def password = "204127@Xcc"
+
 node {
 stage('拉取代码') {
     checkout scmGit(branches: [[name: "*/${branch}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${auth_id}", url: "${git_url}"]])
