@@ -7,6 +7,14 @@ def branch = "master"
 // 凭证ID（Jenkins中配置的SSH凭证ID）
 def auth_id = "git"
 
+//镜像的版本号
+def tag = "latest"
+
+//harbor的url地址
+def harbor_url = "192.168.42.129:85"
+
+//镜像仓库名称
+def harbor_project = "test"
 node {
 stage('拉取代码') {
     checkout scmGit(branches: [[name: "*/${branch}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${auth_id}", url: "${git_url}"]])
@@ -29,5 +37,11 @@ stage('删除旧镜像') {
 
 stage('编译打包子工程') {
     sh "mvn -f ${project} clean install dockerfile:build"
+    //定义镜像名称
+    def imagename = "${project}:${tag}"
+
+    //对镜像打标签
+    sh "docker tag ${imagename} ${harbor_url}/${harboe_project}/${imagename}"
 	}
 }
+
