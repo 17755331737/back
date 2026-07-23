@@ -23,6 +23,6 @@ stage('代码审查') {
 			}	
 }
 stage('编译打包子工程') {
-    sh "mvn -f ${project} clean install"
+    sh "mvn -f ${project} clean install dockerfile:build"
 	}
 }

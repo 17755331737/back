@@ -1,6 +1,5 @@
-#FROM java:8
-FROM openjdk:8-jdk-alpine
+FROM swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/library/eclipse-temurin:21-jdk
 ARG JAR_FILE
 COPY ${JAR_FILE} app.jar
-EXPOSE 10020
+EXPOSE 10086
 ENTRYPOINT ["java","-jar","/app.jar"]
