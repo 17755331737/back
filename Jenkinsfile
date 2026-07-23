@@ -19,11 +19,6 @@ def harbor_auth = "harbor"
 //镜像仓库名称
 def harbor_project = "test"
 
-//harbor登录的用户
-def username = "administrator"
-
-//harbor登录的密码
-def password = "204127@Xcc"
 
 node {
 stage('拉取代码') {
@@ -41,7 +36,7 @@ stage('代码审查') {
 			}	
 }
 stage('删除旧镜像') {
-    sh "docker rmi -f  ${project}"
+    sh "docker rmi -f  ${project}:${tag} || true"
         }
 
 
@@ -56,13 +51,16 @@ stage('编译打包子工程') {
     //推送镜像到harbor仓库
     withCredentials([usernamePassword(credentialsId: "${harbor_auth}", passwordVariable: 'password', usernameVariable: 'username')]) {
     // some block
-}
+
     //登录harbor
     sh "docker login  -u ${username} -p ${password} ${harbor_url}"
 
     //镜像上传
-    sh "docker push  ${imagename} ${harbor_url}/${harbor_project}/${imagename}"
+    sh "docker push  ${harbor_url}/${harbor_project}/${imagename}"
     sh "echo '镜像推送完成'"
+    
+}
+
 	}
 }
 
