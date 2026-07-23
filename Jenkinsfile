@@ -37,6 +37,7 @@ stage('代码审查') {
 }
 stage('删除旧镜像') {
     sh "docker rmi -f  ${project}:${tag} || true"
+    sh "docker rmi -f ${harbor_url}/${harbor_project}/${project}:${tag} || true"
     sh " docker image prune -f"
         }
 
