@@ -22,6 +22,11 @@ stage('代码审查') {
 				"""
 			}	
 }
+stage('删除旧镜像') {
+    sh "docker rmi -f  ${project}"
+        }
+
+
 stage('编译打包子工程') {
     sh "mvn -f ${project} clean install dockerfile:build"
 	}
