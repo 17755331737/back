@@ -10,5 +10,9 @@ eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
+    service-url:
+        defaultZone: http://192.168.42.129:${server.port}
+  server:
+    enable_self_preservation: false 
   instance:
     hostname: localhost
