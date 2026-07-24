@@ -37,8 +37,6 @@ stage('代码审查') {
 }
 stage('删除旧镜像') {
     sh "docker rmi -f  ${project}:${tag} || true"
-    sh "docker rmi -f ${harbor_url}/${harbor_project}/${project}:${tag} || true"
-    sh " docker image prune -f"
         }
 
 
@@ -60,7 +58,9 @@ stage('编译打包子工程') {
     //镜像上传
     sh "docker push  ${harbor_url}/${harbor_project}/${imagename}"
     sh "echo '镜像推送完成'"
-    
+
+    //应用上传
+    sshPublisher(publishers: [sshPublisherDesc(configName: 'xcc-test2', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/opt/jenkins_shell/deploy.sh $harbor_url $harbor_project $project $tag $port" , execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
 }
 
 	}
